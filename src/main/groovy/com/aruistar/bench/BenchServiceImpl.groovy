@@ -1,11 +1,14 @@
 package com.aruistar.bench
 
+import com.aruistar.entity.BenchForm
 import com.aruistar.other.AruisLog
 import io.vertx.core.AsyncResult
 import io.vertx.core.Future
 import io.vertx.core.Handler
 import io.vertx.core.Vertx
 import io.vertx.core.json.JsonObject
+import io.vertx.ext.web.client.WebClient
+import io.vertx.ext.web.client.WebClientOptions
 
 class BenchServiceImpl implements BenchService, AruisLog {
 
@@ -18,5 +21,41 @@ class BenchServiceImpl implements BenchService, AruisLog {
 
     }
 
+    @Override
+    BenchService bench(BenchForm form, Handler<AsyncResult<Void>> resultHandler) {
 
+        log.info("bench begin " + form.toString())
+
+        WebClient client = WebClient.create(vertx, new WebClientOptions().setKeepAlive(form.keepAlive).setMaxPoolSize(form.maxPoolSize).setConnectTimeout(form.timeout))
+
+
+        int all = form.allRequestTimes
+        int fail = 0
+
+        def start = new Date()
+        log.info(start.toString())
+
+        all.times {
+            client.getAbs("http://" + form.url).send({ ar ->
+
+                if (ar.succeeded()) {
+//                    log.info(ar.result().bodyAsString())
+                } else {
+                    fail++
+                }
+
+                if (--all == 0) {
+                    def expend = (new Date().time - start.time) / 1000
+                    log.info("expend $expend s , fila num is $fail")
+                }
+
+
+            })
+
+
+        }
+
+        resultHandler.handle(Future.succeededFuture())
+        return this
+    }
 }

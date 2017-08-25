@@ -18,6 +18,13 @@ export class MyFormComponent implements OnInit {
       // return
     }
 
+    var value = this.validateForm.value
+
+
+    value.maxPoolSize = parseInt(value.maxPoolSize)
+    value.timeout = parseInt(value.timeout)
+    value.allRequestTimes = parseInt(value.allRequestTimes)
+
     this.http.post("/bench", this.validateForm.value).subscribe(data => {
       console.log(data)
     })
@@ -36,7 +43,7 @@ export class MyFormComponent implements OnInit {
       keepAlive: [true],
       maxPoolSize: [5],
       timeout: [5],
-      allRequestTimes: [50],
+      allRequestTimes: [10],
     });
   }
 

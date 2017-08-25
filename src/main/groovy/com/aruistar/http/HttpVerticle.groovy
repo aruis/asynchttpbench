@@ -1,6 +1,8 @@
 package com.aruistar.http
 
 import com.aruistar.bench.BenchService
+import com.aruistar.entity.BenchForm
+import com.aruistar.entity.BenchFormConverter
 import com.aruistar.other.AruisLog
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.Future
@@ -30,10 +32,14 @@ class HttpVerticle extends AbstractVerticle implements AruisLog {
 
         router.post("/bench").handler({ context ->
 
-            JsonObject json = context.getBodyAsJson()
-            println(json)
+            JsonObject body = context.getBodyAsJson()
+            BenchForm form = new BenchForm()
+            BenchFormConverter.fromJson(body, form)
+            service.bench(form, {
 
-            context.response().putHeader('content-type', 'application/json').end(json.toString())
+            })
+
+            context.response().putHeader('content-type', 'application/json').end(body.toString())
         })
 
         router.route().handler(StaticHandler.create().setAllowRootFileSystemAccess(true).setWebRoot("/Users/liurui/develop/workspace-study/asynchttpbench/web/dist"))
