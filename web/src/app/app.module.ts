@@ -7,11 +7,13 @@ import {NgZorroAntdModule} from 'ng-zorro-antd';
 import {AppComponent} from './app.component';
 import {MyFormComponent} from './my-form/my-form.component';
 import {HttpClientModule} from '@angular/common/http';
+import {MatrixComponent} from './matrix/matrix.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MyFormComponent
+    MyFormComponent,
+    MatrixComponent
   ],
   imports: [
     BrowserModule,
