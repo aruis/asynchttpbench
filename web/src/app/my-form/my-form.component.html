@@ -1,0 +1,102 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="_submitForm()">
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+      <label nz-form-item-required>
+            <span>
+              URL
+              <nz-tooltip [nzTitle]="'only support http'">
+                <i nz-tooltip class="anticon anticon-question-circle-o"></i>
+              </nz-tooltip>
+            </span>
+      </label>
+    </div>
+
+
+    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getFormControl('url')">
+      <nz-input [nzSize]="'large'" formControlName="url" [nzId]="'url'" [nzPlaceHolder]="'www.baidu.com:80'"></nz-input>
+      <div nz-form-explain *ngIf="getFormControl('url').dirty&&getFormControl('url').hasError('url')">The input is
+        not valid E-mail!
+      </div>
+    </div>
+  </div>
+
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+      <label>
+            <span>
+              all-request-times
+              <!--<nz-tooltip [nzTitle]="'maximum number of HTTP/1 connections a client'">-->
+              <!--<i nz-tooltip class="anticon anticon-question-circle-o"></i>-->
+              <!--</nz-tooltip>-->
+            </span>
+      </label>
+    </div>
+
+
+    <div nz-form-control nz-col [nzSpan]="14">
+      <nz-input-number formControlName="allRequestTimes" [nzSize]="'large'" [nzStep]="10"
+                       [nzMin]="1"></nz-input-number>
+    </div>
+  </div>
+
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+      <label>
+            <span>
+              timeout
+              <nz-tooltip [nzTitle]="'timeout second'">
+                <i nz-tooltip class="anticon anticon-question-circle-o"></i>
+              </nz-tooltip>
+            </span>
+      </label>
+    </div>
+
+
+    <div nz-form-control nz-col [nzSpan]="14">
+      <nz-input-number formControlName="timeout" [nzSize]="'large'" [nzStep]="1"
+                       [nzMin]="1"></nz-input-number>
+    </div>
+  </div>
+
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSpan]="6">
+      <label>
+            <span>
+              keep-alive
+              <nz-tooltip [nzTitle]="'value of whether keep-alive is enabled'">
+                <i nz-tooltip class="anticon anticon-question-circle-o"></i>
+              </nz-tooltip>
+            </span>
+      </label>
+    </div>
+    <div nz-form-control nz-col [nzSpan]="14">
+      <nz-switch formControlName="keepAlive"></nz-switch>
+    </div>
+  </div>
+
+  <div nz-form-item nz-row *ngIf="validateForm.controls['keepAlive'].value">
+    <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+      <label>
+            <span>
+              max-pool-size
+              <nz-tooltip [nzTitle]="'maximum number of HTTP/1 connections a client'">
+                <i nz-tooltip class="anticon anticon-question-circle-o"></i>
+              </nz-tooltip>
+            </span>
+      </label>
+    </div>
+
+
+    <div nz-form-control nz-col [nzSpan]="14">
+      <nz-input-number formControlName="maxPoolSize" [nzSize]="'large'" [nzStep]="1" [nzMax]="200"
+                       [nzMin]="1"></nz-input-number>
+    </div>
+  </div>
+
+
+  <div nz-form-item nz-row>
+    <div nz-form-control nz-col [nzSpan]="12" [nzOffset]="6">
+      <button nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="validateForm.invalid">Submit</button>
+    </div>
+  </div>
+</form>
