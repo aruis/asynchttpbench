@@ -23,7 +23,7 @@
     "@angular/router": "^4.2.4",
     "@types/sockjs-client": "^1.0.32",
     "core-js": "^2.4.1",
-    "ng-zorro-antd": "^0.5.0-rc.2",
+    "ng-zorro-antd": "^0.5.0-rc.3",
     "rxjs": "^5.4.2",
     "zone.js": "^0.8.14"
   },
