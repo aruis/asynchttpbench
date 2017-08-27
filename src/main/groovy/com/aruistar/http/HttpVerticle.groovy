@@ -47,7 +47,9 @@ class HttpVerticle extends AbstractVerticle implements AruisLog {
         })
 
 
-        BridgeOptions options = new BridgeOptions().addOutboundPermitted(new PermittedOptions().setAddress("test"));
+        BridgeOptions options = new BridgeOptions()
+                .addInboundPermitted(new PermittedOptions().setAddress("com.aruistar.bench"))
+                .addOutboundPermitted(new PermittedOptions().setAddressRegex(/com\.aruistar\.bench\..+/))
 
         router.route("/eventbus/*").handler(SockJSHandler.create(vertx).bridge(options, { event ->
 
@@ -59,7 +61,7 @@ class HttpVerticle extends AbstractVerticle implements AruisLog {
             }
 
             // This signals that it's ok to process the event
-            event.complete(true);
+            event.complete(true)
 
         }));
 
@@ -67,7 +69,7 @@ class HttpVerticle extends AbstractVerticle implements AruisLog {
         router.route().handler(StaticHandler.create().setAllowRootFileSystemAccess(true).setWebRoot("/Users/liurui/develop/workspace-study/asynchttpbench/web/dist"))
 
         vertx.setPeriodic(2000, {
-            vertx.eventBus().send("test", "hello")
+            vertx.eventBus().send("com.aruistar.bench.1", "hello")
 
         })
 

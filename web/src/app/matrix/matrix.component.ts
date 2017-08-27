@@ -20,7 +20,8 @@ export class MatrixComponent implements OnInit {
     eb.connect("/eventbus")
     eb.open.subscribe(x => {
 
-      eb.registerHandler("test", (error, message) => {
+      eb.registerHandler("com.aruistar.bench.1", (error, message) => {
+        console.log(error)
         console.log(message)
       })
 
