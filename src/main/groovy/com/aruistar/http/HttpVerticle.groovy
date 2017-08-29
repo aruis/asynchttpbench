@@ -39,11 +39,10 @@ class HttpVerticle extends AbstractVerticle implements AruisLog {
             JsonObject body = context.getBodyAsJson()
             BenchForm form = new BenchForm()
             BenchFormConverter.fromJson(body, form)
-            service.bench(form, {
-
+            service.bench(form, { res ->
+                context.response().putHeader('content-type', 'text/plain').end(res.result())
             })
 
-            context.response().putHeader('content-type', 'application/json').end(body.toString())
         })
 
 

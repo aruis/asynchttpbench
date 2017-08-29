@@ -12,7 +12,7 @@ import io.vertx.core.json.JsonObject;
 public interface BenchService {
 
     @Fluent
-    BenchService bench(BenchForm form, Handler<AsyncResult<Void>> resultHandler);
+    BenchService bench(BenchForm form, Handler<AsyncResult<String>> resultHandler);
 
     static BenchService create(Vertx vertx, JsonObject dbConfig, Handler<AsyncResult<BenchService>> readyHandler) {
         return new BenchServiceImpl(vertx, dbConfig, readyHandler);

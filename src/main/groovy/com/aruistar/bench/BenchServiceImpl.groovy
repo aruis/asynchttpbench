@@ -22,18 +22,21 @@ class BenchServiceImpl implements BenchService, AruisLog {
     }
 
     @Override
-    BenchService bench(BenchForm form, Handler<AsyncResult<Void>> resultHandler) {
+    BenchService bench(BenchForm form, Handler<AsyncResult<String>> resultHandler) {
 
         log.info("bench begin " + form.toString())
 
         WebClient client = WebClient.create(vertx, new WebClientOptions().setKeepAlive(form.keepAlive).setMaxPoolSize(form.maxPoolSize).setConnectTimeout(form.timeout))
 
+        String uuid = UUID.randomUUID().toString()
 
         int all = form.allRequestTimes
         int fail = 0
 
         def start = new Date()
         log.info(start.toString())
+
+        form.url = form.url.replace("http://", "")
 
         all.times {
             client.getAbs("http://" + form.url).send({ ar ->
@@ -43,6 +46,8 @@ class BenchServiceImpl implements BenchService, AruisLog {
                 } else {
                     fail++
                 }
+
+                vertx.eventBus().send("com.aruistar.bench.$uuid", ar.succeeded())
 
                 if (--all == 0) {
                     def expend = (new Date().time - start.time) / 1000
@@ -55,7 +60,7 @@ class BenchServiceImpl implements BenchService, AruisLog {
 
         }
 
-        resultHandler.handle(Future.succeededFuture())
+        resultHandler.handle(Future.succeededFuture(uuid))
         return this
     }
 }
