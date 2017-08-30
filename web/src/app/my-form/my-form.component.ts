@@ -1,11 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from "@angular/common/http";
+import {BenchService} from "../bench.service";
 
 
 @Component({
   selector: 'app-my-form',
   templateUrl: './my-form.component.html',
+  providers: [BenchService],
   styleUrls: ['./my-form.component.css']
 })
 export class MyFormComponent implements OnInit {
@@ -26,14 +28,14 @@ export class MyFormComponent implements OnInit {
     value.allRequestTimes = parseInt(value.allRequestTimes)
 
     this.http.post("/bench", this.validateForm.value).subscribe(data => {
-      console.log(data)
+      this.service.uuid = data["uuid"]
     })
 
 
     console.log(this.validateForm.value)
   }
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private service: BenchService) {
   }
 
 

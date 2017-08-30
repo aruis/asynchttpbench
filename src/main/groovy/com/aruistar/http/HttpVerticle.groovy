@@ -24,7 +24,7 @@ class HttpVerticle extends AbstractVerticle implements AruisLog {
     void start(Future<Void> startFuture) throws Exception {
         service = BenchService.createProxy(vertx, "aruistar.bench")
 
-        int port = config().getInteger("port", 8080)
+        int port = config().getInteger("port", 7070)
 
         HttpServer server = vertx.createHttpServer()
 
@@ -40,7 +40,9 @@ class HttpVerticle extends AbstractVerticle implements AruisLog {
             BenchForm form = new BenchForm()
             BenchFormConverter.fromJson(body, form)
             service.bench(form, { res ->
-                context.response().putHeader('content-type', 'text/plain').end(res.result())
+                context.response()
+                        .putHeader('content-type', 'application/json')
+                        .end("""{"uuid":"${res.result()}"}""")
             })
 
         })
@@ -66,11 +68,6 @@ class HttpVerticle extends AbstractVerticle implements AruisLog {
 
 
         router.route().handler(StaticHandler.create().setAllowRootFileSystemAccess(true).setWebRoot("/Users/liurui/develop/workspace-study/asynchttpbench/web/dist"))
-
-        vertx.setPeriodic(2000, {
-            vertx.eventBus().send("com.aruistar.bench.1", "hello")
-
-        })
 
         server.requestHandler(router.&accept)
                 .listen(port, { ar ->
