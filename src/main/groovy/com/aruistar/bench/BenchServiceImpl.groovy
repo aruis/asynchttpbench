@@ -32,6 +32,7 @@ class BenchServiceImpl implements BenchService, AruisLog {
 
         int all = form.allRequestTimes
         int fail = 0
+        int suc = 0
 
         def start = new Date()
         log.info(start.toString())
@@ -42,6 +43,7 @@ class BenchServiceImpl implements BenchService, AruisLog {
             client.getAbs("http://" + form.url).send({ ar ->
 
                 if (ar.succeeded()) {
+                    suc++
 //                    log.info(ar.result().bodyAsString())
                 } else {
                     fail++
@@ -51,7 +53,7 @@ class BenchServiceImpl implements BenchService, AruisLog {
 
                 if (--all == 0) {
                     def expend = (new Date().time - start.time) / 1000
-                    log.info("expend $expend s , fila num is $fail")
+                    log.info("expend $expend s ,suc num is $suc, fail num is $fail")
                 }
 
 

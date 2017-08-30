@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {EventBusService} from "../EventBusService";
-import {BenchService} from "../bench.service";
+import {BenchService, MetaBench} from "../bench.service";
 
 @Component({
   selector: 'app-matrix',
@@ -10,27 +10,47 @@ import {BenchService} from "../bench.service";
 })
 export class MatrixComponent implements OnInit {
 
-  size = 1000
+  uuid
   all = []
 
   constructor(public service: BenchService) {
-    for (let i = 1; i <= this.size; i++) {
-      this.all.push({})
-    }
+
 
     let eb = new EventBusService()
     eb.connect("/eventbus")
     eb.open.subscribe(x => {
 
-      eb.registerHandler("com.aruistar.bench.1", (error, message) => {
-        console.log(error)
-        console.log(message)
-      })
 
     })
 
+    this.service.event.subscribe((item: MetaBench) => {
+      this.uuid = item.uuid
+
+      this.all = []
+
+      let size = item.times
+
+      let i = 0
+
+
+      eb.registerHandler("com.aruistar.bench." + item.uuid, (error, message) => {
+        if (message['body']) {
+          this.all[i].ok = 1
+        } else {
+          this.all[i].ok = -1
+        }
+        i++
+      })
+
+      for (let i = 1; i <= size; i++) {
+        this.all.push({ok: 0})
+      }
+
+      console.log(this.uuid)
+    })
 
   }
+
 
   ngOnInit() {
 

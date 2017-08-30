@@ -67,7 +67,7 @@ class HttpVerticle extends AbstractVerticle implements AruisLog {
         }));
 
 
-        router.route().handler(StaticHandler.create().setAllowRootFileSystemAccess(true).setWebRoot("/Users/liurui/develop/workspace-study/asynchttpbench/web/dist"))
+        router.route().handler(StaticHandler.create().setCachingEnabled(false).setAllowRootFileSystemAccess(true).setWebRoot("/Users/liurui/develop/workspace-study/asynchttpbench/web/dist"))
 
         server.requestHandler(router.&accept)
                 .listen(port, { ar ->

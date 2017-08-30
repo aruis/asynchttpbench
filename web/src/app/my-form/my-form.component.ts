@@ -1,7 +1,8 @@
+///<reference path="../bench.service.ts"/>
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from "@angular/common/http";
-import {BenchService} from "../bench.service";
+import {BenchService, MetaBench} from "../bench.service";
 
 
 @Component({
@@ -20,7 +21,7 @@ export class MyFormComponent implements OnInit {
       // return
     }
 
-    var value = this.validateForm.value
+    let value = this.validateForm.value
 
 
     value.maxPoolSize = parseInt(value.maxPoolSize)
@@ -28,11 +29,10 @@ export class MyFormComponent implements OnInit {
     value.allRequestTimes = parseInt(value.allRequestTimes)
 
     this.http.post("/bench", this.validateForm.value).subscribe(data => {
-      this.service.uuid = data["uuid"]
+      console.log(data)
+      this.service.event.emit(new MetaBench(data["uuid"], value.allRequestTimes))
     })
 
-
-    console.log(this.validateForm.value)
   }
 
   constructor(private fb: FormBuilder, private http: HttpClient, private service: BenchService) {
@@ -41,7 +41,7 @@ export class MyFormComponent implements OnInit {
 
   ngOnInit() {
     this.validateForm = this.fb.group({
-      url: [null, [Validators.required]],
+      url: ["http://127.0.0.1:7070/", [Validators.required]],
       keepAlive: [true],
       maxPoolSize: [5],
       timeout: [5],
