@@ -34,12 +34,17 @@ export class MatrixComponent implements OnInit {
 
 
       eb.registerHandler("com.aruistar.bench." + item.uuid, (error, message) => {
-        if (message['body']) {
-          this.all[i].ok = 1
-        } else {
-          this.all[i].ok = -1
-        }
-        i++
+
+        setTimeout(x => {
+          if (message['body']) {
+            this.all[i].ok = 1
+          } else {
+            this.all[i].ok = -1
+          }
+          i++
+        })
+
+
       })
 
       for (let i = 1; i <= size; i++) {

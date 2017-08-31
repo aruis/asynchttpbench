@@ -30,6 +30,8 @@ class BenchServiceImpl implements BenchService, AruisLog {
 
         String uuid = UUID.randomUUID().toString()
 
+        resultHandler.handle(Future.succeededFuture(uuid))
+        
         int all = form.allRequestTimes
         int fail = 0
         int suc = 0
@@ -62,7 +64,7 @@ class BenchServiceImpl implements BenchService, AruisLog {
 
         }
 
-        resultHandler.handle(Future.succeededFuture(uuid))
+
         return this
     }
 }
