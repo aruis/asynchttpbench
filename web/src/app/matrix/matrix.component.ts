@@ -17,7 +17,7 @@ export class MatrixComponent implements OnInit {
 
 
     let eb = new EventBusService()
-    eb.connect("/eventbus")
+    eb.connect("/eventbus", null, {"vertxbus_ping_interval": 100})
     eb.open.subscribe(x => {
 
 

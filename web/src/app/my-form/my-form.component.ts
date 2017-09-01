@@ -3,7 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from "@angular/common/http";
 import {BenchService, MetaBench} from "../bench.service";
-
+import * as uuid from 'uuid';
 
 @Component({
   selector: 'app-my-form',
@@ -27,10 +27,11 @@ export class MyFormComponent implements OnInit {
     value.maxPoolSize = parseInt(value.maxPoolSize)
     value.timeout = parseInt(value.timeout)
     value.allRequestTimes = parseInt(value.allRequestTimes)
+    value.uuid = uuid.v4()
 
+    this.service.event.emit(new MetaBench(value.uuid, value.allRequestTimes))
     this.http.post("/bench", this.validateForm.value).subscribe(data => {
       console.log(data)
-      this.service.event.emit(new MetaBench(data["uuid"], value.allRequestTimes))
     })
 
   }

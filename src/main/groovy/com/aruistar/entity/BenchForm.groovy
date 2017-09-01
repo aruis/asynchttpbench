@@ -12,6 +12,15 @@ class BenchForm {
     int maxPoolSize
     int timeout
     int allRequestTimes
+    String uuid
+
+    String getUuid() {
+        return uuid
+    }
+
+    void setUuid(String uuid) {
+        this.uuid = uuid
+    }
 
     String getUrl() {
         return url

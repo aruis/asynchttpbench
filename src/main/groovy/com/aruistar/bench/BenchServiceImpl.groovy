@@ -28,10 +28,8 @@ class BenchServiceImpl implements BenchService, AruisLog {
 
         WebClient client = WebClient.create(vertx, new WebClientOptions().setKeepAlive(form.keepAlive).setMaxPoolSize(form.maxPoolSize).setConnectTimeout(form.timeout))
 
-        String uuid = UUID.randomUUID().toString()
+        resultHandler.handle(Future.succeededFuture(form.uuid))
 
-        resultHandler.handle(Future.succeededFuture(uuid))
-        
         int all = form.allRequestTimes
         int fail = 0
         int suc = 0
@@ -51,7 +49,7 @@ class BenchServiceImpl implements BenchService, AruisLog {
                     fail++
                 }
 
-                vertx.eventBus().send("com.aruistar.bench.$uuid", ar.succeeded())
+                vertx.eventBus().send("com.aruistar.bench.${form.uuid}", ar.succeeded())
 
                 if (--all == 0) {
                     def expend = (new Date().time - start.time) / 1000
