@@ -39,6 +39,15 @@ class BenchServiceImpl implements BenchService, AruisLog {
 
         form.url = form.url.replace("http://", "")
 
+
+        def peri
+        peri = vertx.setPeriodic(1000, {
+            vertx.eventBus().send("com.aruistar.bench.${form.uuid}", suc)
+            if (all == 0) {
+                vertx.cancelTimer(peri)
+            }
+        })
+
         all.times {
             client.getAbs("http://" + form.url).send({ ar ->
 
@@ -48,8 +57,6 @@ class BenchServiceImpl implements BenchService, AruisLog {
                 } else {
                     fail++
                 }
-
-                vertx.eventBus().send("com.aruistar.bench.${form.uuid}", ar.succeeded())
 
                 if (--all == 0) {
                     def expend = (new Date().time - start.time) / 1000

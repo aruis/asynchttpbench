@@ -30,18 +30,14 @@ export class MatrixComponent implements OnInit {
 
       let size = item.times
 
-      let i = 0
-
 
       eb.registerHandler("com.aruistar.bench." + item.uuid, (error, message) => {
 
         setTimeout(x => {
-          if (message['body']) {
+          let suc = message['body']
+          for (let i = 0; i < suc; i++) {
             this.all[i].ok = 1
-          } else {
-            this.all[i].ok = -1
           }
-          i++
         })
 
 
