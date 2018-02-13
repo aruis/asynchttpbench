@@ -15,6 +15,14 @@ export class MyFormComponent implements OnInit {
 
   validateForm: FormGroup;
 
+  countIndex() {
+    for (let i = 1; i <= 100; i++) {
+      this.http.get("/count?index=" + i).subscribe(data => {
+        console.log(data)
+      })
+    }
+  }
+
   _submitForm() {
     for (const i in this.validateForm.controls) {
       this.validateForm.controls[i].markAsDirty()

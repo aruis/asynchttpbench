@@ -30,9 +30,16 @@ class HttpVerticle extends AbstractVerticle implements AruisLog {
 
         Router router = Router.router(vertx)
 
-
-
         router.post().handler(BodyHandler.create())
+
+        router.get("/count").handler({ context ->
+//            Thread.start
+//                    {
+                        log.info(context.request().getParam("index"))
+                        context.response().end()
+//                    }
+
+        })
 
         router.post("/bench").handler({ context ->
 
